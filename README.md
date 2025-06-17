@@ -16,6 +16,8 @@ All backend components are built using serverless AWS services such as:
 - AWS CloudWatch
 - AWS Amplify (for frontend hosting)
 
+![image](https://github.com/user-attachments/assets/271dec18-db13-4ed5-81a0-36e42dd24065)
+
 ## DynamoDB Tables
 
 The backend uses two DynamoDB tables:
