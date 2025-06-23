@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <nav class="navbar navbar-light bg-white shadow-sm mb-4">
@@ -50,8 +49,14 @@ export default {
     fetch("https://ts5qd767sh.execute-api.us-east-1.amazonaws.com/prod/slots")
       .then(res => res.json())
       .then(data => {
-        const parsed = JSON.parse(data.body);
-        this.slots = parsed.filter(s => !s.isBooked).map(s => s.slot);
+        // 🔧 إصلاح الخطأ: نتأكد إذا data.body نص أو مصفوفة
+        const parsed = typeof data.body === "string" ? JSON.parse(data.body) : data.body;
+        console.log("✅ Slots fetched:", parsed);
+        this.slots = parsed.map(s => s.slot); // تم الفلترة في Lambda
+      })
+      .catch(err => {
+        console.error("❌ Failed to load slots:", err);
+        alert("Error loading available slots");
       });
   },
   methods: {
@@ -69,16 +74,17 @@ export default {
       })
         .then(res => res.json())
         .then(() => {
-          alert("Appointment booked!");
+          alert("Appointment booked successfully!");
           this.name = "";
           this.symptoms = "";
           this.selectedSlot = "";
         })
         .catch(err => {
-          console.error("Error booking appointment:", err);
+          console.error("❌ Error booking appointment:", err);
           alert("Failed to book appointment.");
         });
     }
   }
 };
 </script>
+
